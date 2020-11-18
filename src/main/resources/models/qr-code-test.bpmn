@@ -20,7 +20,7 @@
           <camunda:inputOutput>
             <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="JavaScript">out=JSON.stringify({
-"order-id": order-id,
+"order_id": order_id,
 });</camunda:script>
             </camunda:inputParameter>
             <camunda:inputParameter name="headers">
@@ -44,10 +44,11 @@ patient_id=object.patientid;</camunda:script>
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>SequenceFlow_1ljp8xb</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:userTask id="Task_13pd4d2" name="Place Order">
+    <bpmn:userTask id="Task_13pd4d2" name="Place Order" camunda:assignee="Customer">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="order-id" label="OrderID #" type="string" />
+          <camunda:formField id="order_id" label="Orderid" type="string" />
+          <camunda:formField id="test_field" label="testfield" type="string" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_1ljp8xb</bpmn:incoming>
