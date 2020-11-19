@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_12d8c92" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.3.0">
   <bpmn:collaboration id="Collaboration_0u5l6eu">
-    <bpmn:participant id="Participant_0obwtag" name="Doctor" processRef="Process_15e5ghi" />
+    <bpmn:participant id="Participant_0obwtag" name="Doctor" processRef="Diagnose" />
     <bpmn:participant id="Participant_09fwwft" name="Patient" processRef="Process_1xkvkfa" />
     <bpmn:messageFlow id="Flow_019ae6v" sourceRef="Activity_0uy7w93" targetRef="Participant_09fwwft" />
     <bpmn:textAnnotation id="TextAnnotation_06u8w33">
@@ -9,7 +9,7 @@
     </bpmn:textAnnotation>
     <bpmn:association id="Association_1iy6e27" sourceRef="Activity_0t5r1gf" targetRef="TextAnnotation_06u8w33" />
   </bpmn:collaboration>
-  <bpmn:process id="Process_15e5ghi" isExecutable="true">
+  <bpmn:process id="Diagnose" isExecutable="true">
     <bpmn:exclusiveGateway id="Gateway_1l3b2bf" name="Medication with prescription needed">
       <bpmn:incoming>Flow_1w577eq</bpmn:incoming>
       <bpmn:outgoing>Flow_0se632a</bpmn:outgoing>
@@ -224,14 +224,14 @@ prescription_id=object.pescriptionid;</camunda:script>
           <dc:Bounds x="716" y="407" width="51" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1hkuzzd_di" bpmnElement="Activity_0uy7w93" bioc:stroke="rgb(229, 57, 53)" bioc:fill="rgb(255, 205, 210)">
+        <dc:Bounds x="940" y="440" width="100" height="80" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_004k33w_di" bpmnElement="TextAnnotation_004k33w">
         <dc:Bounds x="340" y="320" width="100" height="68" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_1vkz34l_di" bpmnElement="TextAnnotation_1vkz34l" bioc:stroke="rgb(67, 160, 71)" bioc:fill="rgb(200, 230, 201)">
         <dc:Bounds x="990" y="200" width="99.99274099883856" height="95.23809523809524" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1hkuzzd_di" bpmnElement="Activity_0uy7w93" bioc:stroke="rgb(229, 57, 53)" bioc:fill="rgb(255, 205, 210)">
-        <dc:Bounds x="940" y="440" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Association_196kk3w_di" bpmnElement="Association_196kk3w">
         <di:waypoint x="347" y="293" />
