@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="General" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="4.3.0">
+  <decision id="getDetailbySymptom" name="getDetailbySymptom">
+    <informationRequirement id="InformationRequirement_1xx668d">
+      <requiredInput href="#symptom" />
+    </informationRequirement>
+    <decisionTable id="decisionTable_1" hitPolicy="COLLECT">
+      <input id="input_1" label="Symptom Type" biodi:width="192" camunda:inputVariable="symptom">
+        <inputExpression id="inputExpression_1" typeRef="string">
+          <text>symptom</text>
+        </inputExpression>
+      </input>
+      <output id="output_1" label="Detail" name="detail" typeRef="string" />
+      <rule id="DecisionRule_188076p">
+        <inputEntry id="UnaryTests_0iax359">
+          <text>"pain"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0rlb38y">
+          <text>"head"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_00bnbtr">
+        <inputEntry id="UnaryTests_0lp6nll">
+          <text>"pain"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ormiay">
+          <text>"throat"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0km3r5j">
+        <inputEntry id="UnaryTests_15r64rq">
+          <text>"pain"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1guivb9">
+          <text>"chest"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_123oy9p">
+        <inputEntry id="UnaryTests_1t1w8tx">
+          <text>"pain"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0cvcn1v">
+          <text>"stomach"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1q7zexv">
+        <inputEntry id="UnaryTests_0lzze2h">
+          <text>"circulatory"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0u32q4u">
+          <text>"low blood pressure"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1xufmw6">
+        <inputEntry id="UnaryTests_0cqd7vl">
+          <text>"circulatory"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0zj1gf5">
+          <text>"high blood pressure"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1vvf89r">
+        <inputEntry id="UnaryTests_0opy9qw">
+          <text>"nausea"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0p0on4r">
+          <text>"strong"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_00qbdr7">
+        <inputEntry id="UnaryTests_0uheie1">
+          <text>"nausea"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_07adnya">
+          <text>"weak"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <inputData id="symptom" name="Symptom" />
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_01lru9g">
+      <dmndi:DMNShape id="DMNShape_0ryo48m" dmnElementRef="getDetailbySymptom">
+        <dc:Bounds height="80" width="180" x="180" y="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0civ4yf" dmnElementRef="symptom">
+        <dc:Bounds height="45" width="125" x="207" y="248" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_0bwhhu0" dmnElementRef="InformationRequirement_1xx668d">
+        <di:waypoint x="270" y="248" />
+        <di:waypoint x="270" y="180" />
+        <di:waypoint x="270" y="160" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

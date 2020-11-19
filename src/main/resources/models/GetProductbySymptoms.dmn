@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="General" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="4.3.0">
+  <decision id="getProductbySymptom" name="getProductforSymptom">
+    <informationRequirement id="InformationRequirement_1xx668d">
+      <requiredInput href="#symptom" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0k48ip2">
+      <requiredInput href="#detail" />
+    </informationRequirement>
+    <decisionTable id="decisionTable_1">
+      <input id="input_1" label="Symptom Type" biodi:width="192" camunda:inputVariable="symptom">
+        <inputExpression id="inputExpression_1" typeRef="string">
+          <text>symptom</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1fm8oqs" label="Detail" camunda:inputVariable="detail">
+        <inputExpression id="LiteralExpression_09qkujy" typeRef="string">
+          <text>detail</text>
+        </inputExpression>
+      </input>
+      <output id="output_1" label="Suggested Medication" name="product_id" typeRef="string" />
+      <rule id="DecisionRule_188076p">
+        <inputEntry id="UnaryTests_0iax359">
+          <text>"pain"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1lkzvdo">
+          <text>"head"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0rlb38y">
+          <text>"Aspirin"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_00bnbtr">
+        <inputEntry id="UnaryTests_0lp6nll">
+          <text>"pain"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0fndfdl">
+          <text>"throat"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ormiay">
+          <text>"DOBENDAN Direkt"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0km3r5j">
+        <inputEntry id="UnaryTests_15r64rq">
+          <text>"pain"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06wrwz2">
+          <text>"chest"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1guivb9">
+          <text>"Ibuprofen"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_123oy9p">
+        <inputEntry id="UnaryTests_1t1w8tx">
+          <text>"pain"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0vsygd6">
+          <text>"stomach"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0cvcn1v">
+          <text>"Paracetamol"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1q7zexv">
+        <inputEntry id="UnaryTests_0lzze2h">
+          <text>"circulatory"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0v1gr94">
+          <text>"low blood pressure"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0u32q4u">
+          <text>"Etilefrin"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1xufmw6">
+        <inputEntry id="UnaryTests_0cqd7vl">
+          <text>"circulatory"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0r52n3k">
+          <text>"high blood pressure"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0zj1gf5">
+          <text>"Benazepril"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1vvf89r">
+        <inputEntry id="UnaryTests_0opy9qw">
+          <text>"nausea"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_07iov31">
+          <text>"strong"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0p0on4r">
+          <text>"Vomex"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_00qbdr7">
+        <inputEntry id="UnaryTests_0uheie1">
+          <text>"nausea"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_18pcphx">
+          <text>"weak"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_07adnya">
+          <text>"Iberogast"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <inputData id="symptom" name="Symptom" />
+  <inputData id="detail" name="Detail" />
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_01lru9g">
+      <dmndi:DMNShape id="DMNShape_0ryo48m" dmnElementRef="getProductbySymptom">
+        <dc:Bounds height="80" width="180" x="180" y="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0civ4yf" dmnElementRef="symptom">
+        <dc:Bounds height="45" width="125" x="118" y="248" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1f594f2" dmnElementRef="detail">
+        <dc:Bounds height="45" width="125" x="288" y="248" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_0bwhhu0" dmnElementRef="InformationRequirement_1xx668d">
+        <di:waypoint x="181" y="248" />
+        <di:waypoint x="240" y="180" />
+        <di:waypoint x="240" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_1w04og2" dmnElementRef="InformationRequirement_0k48ip2">
+        <di:waypoint x="351" y="248" />
+        <di:waypoint x="300" y="180" />
+        <di:waypoint x="300" y="160" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
