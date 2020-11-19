@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="Definitions_1s5go8p" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="4.4.0">
-  <decision id="Decision_1thqr5e" name="Symptoms">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="getproductbysymptom" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="4.3.0">
+  <decision id="getProductbySymptoms" name="Symptoms">
     <decisionTable id="decisionTable_1">
-      <input id="input_1" label="Syptom Type">
+      <input id="input_1" label="Symptom Type" biodi:width="192">
         <inputExpression id="inputExpression_1" typeRef="string">
-          <text></text>
+          <text>symptom</text>
         </inputExpression>
       </input>
       <input id="InputClause_1fm8oqs" label="Detail">
         <inputExpression id="LiteralExpression_09qkujy" typeRef="string">
-          <text></text>
+          <text>detail</text>
         </inputExpression>
       </input>
-      <output id="output_1" label="Suggested Medication" typeRef="string" />
+      <output id="output_1" label="Suggested Medication" name="product_id" typeRef="string" />
       <rule id="DecisionRule_188076p">
         <inputEntry id="UnaryTests_0iax359">
           <text>pain</text>
@@ -105,8 +105,8 @@
   </decision>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="DMNDiagram_01lru9g">
-      <dmndi:DMNShape id="DMNShape_0ryo48m" dmnElementRef="Decision_1thqr5e">
-        <dc:Bounds height="80" width="180" x="150" y="150" />
+      <dmndi:DMNShape id="DMNShape_0ryo48m" dmnElementRef="getProductbySymptoms">
+        <dc:Bounds height="80" width="180" x="150" y="80" />
       </dmndi:DMNShape>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>
