@@ -10,5 +10,5 @@ camunda:
       password: ${CAMUNDA_ADMIN_PASSWORD:demo}
 
 cors:
-  enabled: ${CORS_ENABLED:true}
+  enabled: ${CORS_ENABLED:false}
   allowed-origin: ${CORS_ORIGIN:*}
