@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_03wpv8a" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.3.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_03wpv8a" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.4.0">
   <bpmn:collaboration id="Order_Environment">
     <bpmn:participant id="Participant_1t9yldq" name="App" processRef="Order" />
     <bpmn:participant id="Participant_1sflz7e" name="Customer" processRef="Process_1su1ssz" />
@@ -14,6 +14,7 @@
     <bpmn:messageFlow id="Flow_1f28bbl" sourceRef="Participant_1sflz7e" targetRef="Activity_0v33c4r" />
     <bpmn:messageFlow id="Flow_1xefhiw" sourceRef="Activity_0nf1cuh" targetRef="Participant_1sflz7e" />
     <bpmn:messageFlow id="Flow_1exh13t" sourceRef="Activity_0u956um" targetRef="Participant_1sflz7e" />
+    <bpmn:messageFlow id="Flow_0nv8m6x" sourceRef="Participant_1sflz7e" targetRef="Activity_1pqtdac" />
   </bpmn:collaboration>
   <bpmn:process id="Order" isExecutable="true">
     <bpmn:serviceTask id="Activity_1xr8heo" name="Has open Prescription?">
@@ -156,19 +157,6 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
         <bpmn:targetRef>DataStoreReference_18ggt5n</bpmn:targetRef>
       </bpmn:dataOutputAssociation>
     </bpmn:userTask>
-    <bpmn:userTask id="Activity_0u956um" name="Suggest Product">
-      <bpmn:extensionElements>
-        <camunda:formData>
-          <camunda:formField id="suggestions_json" label="Suggestion" type="string" />
-        </camunda:formData>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_05d0bx0</bpmn:incoming>
-      <bpmn:incoming>Flow_04frvno</bpmn:incoming>
-      <bpmn:outgoing>Flow_190w5x5</bpmn:outgoing>
-      <bpmn:dataOutputAssociation id="DataOutputAssociation_0o0eihr">
-        <bpmn:targetRef>DataStoreReference_0ypu29o</bpmn:targetRef>
-      </bpmn:dataOutputAssociation>
-    </bpmn:userTask>
     <bpmn:userTask id="Activity_16il0x1" name="Update Patient Dossier">
       <bpmn:extensionElements>
         <camunda:formData>
@@ -235,6 +223,36 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
       <bpmn:incoming>Flow_1e2436p</bpmn:incoming>
       <bpmn:outgoing>Flow_1pz28ov</bpmn:outgoing>
     </bpmn:userTask>
+    <bpmn:serviceTask id="Activity_0u956um" name="Suggest Product">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="payload">
+              <camunda:script scriptFormat="javascript">out=JSON.stringify({
+"product_id": Product_ID
+});</camunda:script>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="content-type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="url">https://hook.integromat.com/doboze1oygkx15aes9v2tp8yyvc955pj</camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
+            <camunda:outputParameter name="suggestion">
+              <camunda:script scriptFormat="javascript">suggestion=response;</camunda:script>
+            </camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_04frvno</bpmn:incoming>
+      <bpmn:incoming>Flow_05d0bx0</bpmn:incoming>
+      <bpmn:outgoing>Flow_190w5x5</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_0o0eihr">
+        <bpmn:targetRef>DataStoreReference_0ypu29o</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmn:process id="Process_1su1ssz" isExecutable="false" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -242,73 +260,17 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
       <bpmndi:BPMNShape id="Participant_1t9yldq_di" bpmnElement="Participant_1t9yldq" isHorizontal="true">
         <dc:Bounds x="115" y="80" width="2055" height="390" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_0x41598_di" bpmnElement="Flow_0x41598" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="835" y="340" />
-        <di:waypoint x="980" y="340" />
+      <bpmndi:BPMNEdge id="Flow_01sv2sl_di" bpmnElement="Flow_01sv2sl" bioc:stroke="black" bioc:fill="white">
+        <di:waypoint x="1460" y="340" />
+        <di:waypoint x="1510" y="340" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1pz28ov_di" bpmnElement="Flow_1pz28ov" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="990" y="240" />
-        <di:waypoint x="1140" y="240" />
-        <di:waypoint x="1140" y="315" />
+      <bpmndi:BPMNEdge id="Flow_190w5x5_di" bpmnElement="Flow_190w5x5" bioc:stroke="black" bioc:fill="white">
+        <di:waypoint x="1330" y="340" />
+        <di:waypoint x="1360" y="340" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04frvno_di" bpmnElement="Flow_04frvno" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="1440" y="398" />
-        <di:waypoint x="1440" y="418" />
-        <di:waypoint x="1300" y="418" />
-        <di:waypoint x="1300" y="380" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1bddv8l_di" bpmnElement="Flow_1bddv8l" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="1610" y="340" />
-        <di:waypoint x="1630" y="340" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_13g2ii6_di" bpmnElement="Flow_13g2ii6" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="1880" y="340" />
-        <di:waypoint x="1992" y="340" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_10h8y9j_di" bpmnElement="Flow_10h8y9j" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="1730" y="340" />
-        <di:waypoint x="1780" y="340" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0rhrhrc_di" bpmnElement="Flow_0rhrhrc" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="218" y="340" />
-        <di:waypoint x="270" y="340" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0mtzdui_di" bpmnElement="Flow_0mtzdui" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="370" y="340" />
-        <di:waypoint x="420" y="340" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1atly91_di" bpmnElement="Flow_1atly91" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="810" y="265" />
-        <di:waypoint x="810" y="315" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="818" y="287" width="15" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1e2436p_di" bpmnElement="Flow_1e2436p" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="835" y="240" />
-        <di:waypoint x="890" y="240" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="846" y="223" width="18" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_05d0bx0_di" bpmnElement="Flow_05d0bx0" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="1165" y="340" />
-        <di:waypoint x="1220" y="340" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0xu0482_di" bpmnElement="Flow_0xu0482" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="730" y="240" />
-        <di:waypoint x="785" y="240" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0r904k8_di" bpmnElement="Flow_0r904k8" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="1080" y="340" />
-        <di:waypoint x="1115" y="340" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0soof79_di" bpmnElement="Flow_0soof79" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="615" y="340" />
-        <di:waypoint x="785" y="340" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="693" y="322" width="15" height="14" />
-        </bpmndi:BPMNLabel>
+      <bpmndi:BPMNEdge id="Flow_1unodlk_di" bpmnElement="Flow_1unodlk" bioc:stroke="black" bioc:fill="white">
+        <di:waypoint x="520" y="340" />
+        <di:waypoint x="565" y="340" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_10cemi8_di" bpmnElement="Flow_10cemi8" bioc:stroke="black" bioc:fill="white">
         <di:waypoint x="590" y="315" />
@@ -318,17 +280,73 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
           <dc:Bounds x="596" y="275" width="18" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1unodlk_di" bpmnElement="Flow_1unodlk" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="520" y="340" />
-        <di:waypoint x="565" y="340" />
+      <bpmndi:BPMNEdge id="Flow_0soof79_di" bpmnElement="Flow_0soof79" bioc:stroke="black" bioc:fill="white">
+        <di:waypoint x="615" y="340" />
+        <di:waypoint x="785" y="340" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="693" y="322" width="15" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_190w5x5_di" bpmnElement="Flow_190w5x5" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="1320" y="340" />
-        <di:waypoint x="1360" y="340" />
+      <bpmndi:BPMNEdge id="Flow_0r904k8_di" bpmnElement="Flow_0r904k8" bioc:stroke="black" bioc:fill="white">
+        <di:waypoint x="1080" y="340" />
+        <di:waypoint x="1115" y="340" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_01sv2sl_di" bpmnElement="Flow_01sv2sl" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="1460" y="340" />
-        <di:waypoint x="1510" y="340" />
+      <bpmndi:BPMNEdge id="Flow_0xu0482_di" bpmnElement="Flow_0xu0482" bioc:stroke="black" bioc:fill="white">
+        <di:waypoint x="730" y="240" />
+        <di:waypoint x="785" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05d0bx0_di" bpmnElement="Flow_05d0bx0" bioc:stroke="black" bioc:fill="white">
+        <di:waypoint x="1165" y="340" />
+        <di:waypoint x="1230" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1e2436p_di" bpmnElement="Flow_1e2436p" bioc:stroke="black" bioc:fill="white">
+        <di:waypoint x="835" y="240" />
+        <di:waypoint x="890" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="846" y="223" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1atly91_di" bpmnElement="Flow_1atly91" bioc:stroke="black" bioc:fill="white">
+        <di:waypoint x="810" y="265" />
+        <di:waypoint x="810" y="315" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="818" y="287" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0mtzdui_di" bpmnElement="Flow_0mtzdui" bioc:stroke="black" bioc:fill="white">
+        <di:waypoint x="370" y="340" />
+        <di:waypoint x="420" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0rhrhrc_di" bpmnElement="Flow_0rhrhrc" bioc:stroke="black" bioc:fill="white">
+        <di:waypoint x="218" y="340" />
+        <di:waypoint x="270" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10h8y9j_di" bpmnElement="Flow_10h8y9j" bioc:stroke="black" bioc:fill="white">
+        <di:waypoint x="1730" y="340" />
+        <di:waypoint x="1780" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13g2ii6_di" bpmnElement="Flow_13g2ii6" bioc:stroke="black" bioc:fill="white">
+        <di:waypoint x="1880" y="340" />
+        <di:waypoint x="1992" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1bddv8l_di" bpmnElement="Flow_1bddv8l" bioc:stroke="black" bioc:fill="white">
+        <di:waypoint x="1610" y="340" />
+        <di:waypoint x="1630" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04frvno_di" bpmnElement="Flow_04frvno" bioc:stroke="black" bioc:fill="white">
+        <di:waypoint x="1440" y="398" />
+        <di:waypoint x="1440" y="418" />
+        <di:waypoint x="1310" y="418" />
+        <di:waypoint x="1310" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1pz28ov_di" bpmnElement="Flow_1pz28ov" bioc:stroke="black" bioc:fill="white">
+        <di:waypoint x="990" y="240" />
+        <di:waypoint x="1140" y="240" />
+        <di:waypoint x="1140" y="315" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0x41598_di" bpmnElement="Flow_0x41598" bioc:stroke="black" bioc:fill="white">
+        <di:waypoint x="835" y="340" />
+        <di:waypoint x="980" y="340" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Activity_09p9ub1_di" bpmnElement="Activity_1xr8heo" bioc:stroke="black" bioc:fill="white">
         <dc:Bounds x="420" y="300" width="100" height="80" />
@@ -369,9 +387,6 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
       <bpmndi:BPMNShape id="Activity_093lib3_di" bpmnElement="Activity_0pwk0ja" bioc:stroke="black" bioc:fill="white">
         <dc:Bounds x="630" y="200" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0ki68tu_di" bpmnElement="Activity_0u956um" bioc:stroke="black" bioc:fill="white">
-        <dc:Bounds x="1220" y="300" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0842ldq_di" bpmnElement="Activity_16il0x1" bioc:stroke="black" bioc:fill="white">
         <dc:Bounds x="1780" y="300" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -405,6 +420,9 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
       <bpmndi:BPMNShape id="Activity_03pn6nk_di" bpmnElement="Activity_06kwk7g" bioc:stroke="black" bioc:fill="white">
         <dc:Bounds x="890" y="200" width="100" height="80" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ixyd2h_di" bpmnElement="Activity_0u956um" bioc:stroke="black" bioc:fill="white">
+        <dc:Bounds x="1230" y="300" width="100" height="80" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0u0z6sq_di" bpmnElement="Event_0w0w8ih" bioc:stroke="black" bioc:fill="white">
         <dc:Bounds x="1422" y="362" width="36" height="36" />
       </bpmndi:BPMNShape>
@@ -435,36 +453,36 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
         <di:waypoint x="1530" y="190" />
         <di:waypoint x="1555" y="190" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1gti9qa_di" bpmnElement="Flow_1gti9qa" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="1560" y="380" />
-        <di:waypoint x="1560" y="490" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataOutputAssociation_1c8t6eo_di" bpmnElement="DataOutputAssociation_1c8t6eo" bioc:stroke="black" bioc:fill="white">
         <di:waypoint x="730" y="200" />
         <di:waypoint x="730" y="145" />
         <di:waypoint x="670" y="145" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0w8m8gs_di" bpmnElement="Flow_0w8m8gs" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="680" y="280" />
-        <di:waypoint x="680" y="490" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataOutputAssociation_0o0eihr_di" bpmnElement="DataOutputAssociation_0o0eihr" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="1270" y="300" />
-        <di:waypoint x="1270" y="225" />
+        <di:waypoint x="1277" y="300" />
+        <di:waypoint x="1272" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_0jlkzty_di" bpmnElement="DataOutputAssociation_0jlkzty" bioc:stroke="black" bioc:fill="white">
+        <di:waypoint x="1830" y="300" />
+        <di:waypoint x="1830" y="115" />
+        <di:waypoint x="670" y="115" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataOutputAssociation_02w3j6m_di" bpmnElement="DataOutputAssociation_02w3j6m" bioc:stroke="black" bioc:fill="white">
         <di:waypoint x="1040" y="300" />
         <di:waypoint x="1000" y="130" />
         <di:waypoint x="670" y="130" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gti9qa_di" bpmnElement="Flow_1gti9qa" bioc:stroke="black" bioc:fill="white">
+        <di:waypoint x="1560" y="380" />
+        <di:waypoint x="1560" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0w8m8gs_di" bpmnElement="Flow_0w8m8gs" bioc:stroke="black" bioc:fill="white">
+        <di:waypoint x="680" y="280" />
+        <di:waypoint x="680" y="490" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_11tvbsb_di" bpmnElement="Flow_11tvbsb" bioc:stroke="black" bioc:fill="white">
         <di:waypoint x="1030" y="380" />
         <di:waypoint x="1030" y="490" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="DataOutputAssociation_0jlkzty_di" bpmnElement="DataOutputAssociation_0jlkzty" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="1830" y="300" />
-        <di:waypoint x="1830" y="115" />
-        <di:waypoint x="670" y="115" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0x4650k_di" bpmnElement="Flow_0x4650k">
         <di:waypoint x="710" y="487" />
@@ -495,8 +513,12 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
         <di:waypoint x="1680" y="490" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1exh13t_di" bpmnElement="Flow_1exh13t">
-        <di:waypoint x="1270" y="380" />
-        <di:waypoint x="1270" y="490" />
+        <di:waypoint x="1280" y="380" />
+        <di:waypoint x="1280" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0nv8m6x_di" bpmnElement="Flow_0nv8m6x">
+        <di:waypoint x="320" y="490" />
+        <di:waypoint x="320" y="380" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
