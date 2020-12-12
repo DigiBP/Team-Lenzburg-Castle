@@ -88,8 +88,8 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
     <bpmn:userTask id="Activity_0ul4i93" name="Select Product">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="selected_product_id" type="string" />
-          <camunda:formField id="amount" type="long" />
+          <camunda:formField id="selected_product_id" label="Product ID" type="string" />
+          <camunda:formField id="amount" label="Amount" type="long" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_190w5x5</bpmn:incoming>
@@ -157,18 +157,6 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
         <bpmn:targetRef>DataStoreReference_18ggt5n</bpmn:targetRef>
       </bpmn:dataOutputAssociation>
     </bpmn:userTask>
-    <bpmn:userTask id="Activity_16il0x1" name="Update Patient Dossier">
-      <bpmn:extensionElements>
-        <camunda:formData>
-          <camunda:formField id="mark_prescription_fulfilled" type="boolean" />
-        </camunda:formData>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_10h8y9j</bpmn:incoming>
-      <bpmn:outgoing>Flow_13g2ii6</bpmn:outgoing>
-      <bpmn:dataOutputAssociation id="DataOutputAssociation_0jlkzty">
-        <bpmn:targetRef>DataStoreReference_18ggt5n</bpmn:targetRef>
-      </bpmn:dataOutputAssociation>
-    </bpmn:userTask>
     <bpmn:dataStoreReference id="DataStoreReference_18ggt5n" name="E-Patient Dossier" />
     <bpmn:dataStoreReference id="DataStoreReference_0mhovsw" name="Order" />
     <bpmn:dataStoreReference id="DataStoreReference_0ypu29o" name="Product" />
@@ -187,14 +175,18 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
     <bpmn:sequenceFlow id="Flow_10h8y9j" sourceRef="Activity_0nf1cuh" targetRef="Activity_16il0x1" />
     <bpmn:sequenceFlow id="Flow_0rhrhrc" sourceRef="Event_0a3uimc" targetRef="Activity_1pqtdac" />
     <bpmn:sequenceFlow id="Flow_0mtzdui" sourceRef="Activity_1pqtdac" targetRef="Activity_1xr8heo" />
-    <bpmn:sequenceFlow id="Flow_1atly91" name="No" sourceRef="Gateway_0drl9eu" targetRef="Gateway_1udezr5" />
+    <bpmn:sequenceFlow id="Flow_1atly91" name="No" sourceRef="Gateway_0drl9eu" targetRef="Gateway_1udezr5">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${Order_Prescribed_Product == false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1e2436p" name="Yes" sourceRef="Gateway_0drl9eu" targetRef="Activity_06kwk7g">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${Order_Prescribed_Product == true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_05d0bx0" sourceRef="Gateway_07n6tov" targetRef="Activity_0u956um" />
     <bpmn:sequenceFlow id="Flow_0xu0482" sourceRef="Activity_0pwk0ja" targetRef="Gateway_0drl9eu" />
     <bpmn:sequenceFlow id="Flow_0r904k8" sourceRef="Activity_0e6veoe" targetRef="Gateway_07n6tov" />
-    <bpmn:sequenceFlow id="Flow_0soof79" name="No" sourceRef="Gateway_02aa72u" targetRef="Gateway_1udezr5" />
+    <bpmn:sequenceFlow id="Flow_0soof79" name="No" sourceRef="Gateway_02aa72u" targetRef="Gateway_1udezr5">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${has_open_prescription == false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_10cemi8" name="Yes" sourceRef="Gateway_02aa72u" targetRef="Activity_0pwk0ja">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${has_open_prescription == true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
@@ -228,7 +220,7 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
         <camunda:connector>
           <camunda:inputOutput>
             <camunda:inputParameter name="payload">
-              <camunda:script scriptFormat="javascript">out=JSON.stringify({
+              <camunda:script scriptFormat="JavaScript">out=JSON.stringify({
 "product_id": Product_ID
 });</camunda:script>
             </camunda:inputParameter>
@@ -240,7 +232,7 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
             <camunda:inputParameter name="url">https://hook.integromat.com/doboze1oygkx15aes9v2tp8yyvc955pj</camunda:inputParameter>
             <camunda:inputParameter name="method">POST</camunda:inputParameter>
             <camunda:outputParameter name="suggestion">
-              <camunda:script scriptFormat="javascript">suggestion=response;</camunda:script>
+              <camunda:script scriptFormat="JavaScript">suggestion=response;</camunda:script>
             </camunda:outputParameter>
           </camunda:inputOutput>
           <camunda:connectorId>http-connector</camunda:connectorId>
@@ -251,6 +243,32 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
       <bpmn:outgoing>Flow_190w5x5</bpmn:outgoing>
       <bpmn:dataOutputAssociation id="DataOutputAssociation_0o0eihr">
         <bpmn:targetRef>DataStoreReference_0ypu29o</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_16il0x1" name="Update Patient Dossier">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Content-Type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
+            <camunda:inputParameter name="url">https://hook.integromat.com/1wn8pik7w30fng6uqmg80bfaptnwyzhz</camunda:inputParameter>
+            <camunda:inputParameter name="payload">
+              <camunda:script scriptFormat="JavaScript">out=JSON.stringify({
+"prescription_id": Prescription_ID
+});</camunda:script>
+            </camunda:inputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_10h8y9j</bpmn:incoming>
+      <bpmn:outgoing>Flow_13g2ii6</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_0jlkzty">
+        <bpmn:targetRef>DataStoreReference_18ggt5n</bpmn:targetRef>
       </bpmn:dataOutputAssociation>
     </bpmn:serviceTask>
   </bpmn:process>
@@ -387,9 +405,6 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
       <bpmndi:BPMNShape id="Activity_093lib3_di" bpmnElement="Activity_0pwk0ja" bioc:stroke="black" bioc:fill="white">
         <dc:Bounds x="630" y="200" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0842ldq_di" bpmnElement="Activity_16il0x1" bioc:stroke="black" bioc:fill="white">
-        <dc:Bounds x="1780" y="300" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="DataStoreReference_18ggt5n_di" bpmnElement="DataStoreReference_18ggt5n" bioc:stroke="black" bioc:fill="white">
         <dc:Bounds x="620" y="95" width="50" height="50" />
         <bpmndi:BPMNLabel>
@@ -422,6 +437,9 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0ixyd2h_di" bpmnElement="Activity_0u956um" bioc:stroke="black" bioc:fill="white">
         <dc:Bounds x="1230" y="300" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1nh5pc9_di" bpmnElement="Activity_16il0x1" bioc:stroke="black" bioc:fill="white">
+        <dc:Bounds x="1780" y="300" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0u0z6sq_di" bpmnElement="Event_0w0w8ih" bioc:stroke="black" bioc:fill="white">
         <dc:Bounds x="1422" y="362" width="36" height="36" />
@@ -458,10 +476,6 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
         <di:waypoint x="730" y="145" />
         <di:waypoint x="670" y="145" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="DataOutputAssociation_0o0eihr_di" bpmnElement="DataOutputAssociation_0o0eihr" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="1277" y="300" />
-        <di:waypoint x="1272" y="225" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataOutputAssociation_0jlkzty_di" bpmnElement="DataOutputAssociation_0jlkzty" bioc:stroke="black" bioc:fill="white">
         <di:waypoint x="1830" y="300" />
         <di:waypoint x="1830" y="115" />
@@ -471,6 +485,10 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
         <di:waypoint x="1040" y="300" />
         <di:waypoint x="1000" y="130" />
         <di:waypoint x="670" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_0o0eihr_di" bpmnElement="DataOutputAssociation_0o0eihr" bioc:stroke="black" bioc:fill="white">
+        <di:waypoint x="1277" y="300" />
+        <di:waypoint x="1272" y="225" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1gti9qa_di" bpmnElement="Flow_1gti9qa" bioc:stroke="black" bioc:fill="white">
         <di:waypoint x="1560" y="380" />
