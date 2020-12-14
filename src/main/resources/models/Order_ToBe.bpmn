@@ -196,7 +196,8 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
     <bpmn:userTask id="Activity_0e6veoe" name="GWP&#10;&#38; Symptoms?">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="Product_ID" type="long" />
+          <camunda:formField id="Product_ID" label="Product_ID" type="long" />
+          <camunda:formField id="Prescription_ID" label="Prescription ID" type="string" defaultValue="NONE" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0x41598</bpmn:incoming>
@@ -476,11 +477,6 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
         <di:waypoint x="730" y="145" />
         <di:waypoint x="670" y="145" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="DataOutputAssociation_0jlkzty_di" bpmnElement="DataOutputAssociation_0jlkzty" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="1830" y="300" />
-        <di:waypoint x="1830" y="115" />
-        <di:waypoint x="670" y="115" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataOutputAssociation_02w3j6m_di" bpmnElement="DataOutputAssociation_02w3j6m" bioc:stroke="black" bioc:fill="white">
         <di:waypoint x="1040" y="300" />
         <di:waypoint x="1000" y="130" />
@@ -489,6 +485,11 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
       <bpmndi:BPMNEdge id="DataOutputAssociation_0o0eihr_di" bpmnElement="DataOutputAssociation_0o0eihr" bioc:stroke="black" bioc:fill="white">
         <di:waypoint x="1277" y="300" />
         <di:waypoint x="1272" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_0jlkzty_di" bpmnElement="DataOutputAssociation_0jlkzty" bioc:stroke="black" bioc:fill="white">
+        <di:waypoint x="1830" y="300" />
+        <di:waypoint x="1830" y="115" />
+        <di:waypoint x="670" y="115" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1gti9qa_di" bpmnElement="Flow_1gti9qa" bioc:stroke="black" bioc:fill="white">
         <di:waypoint x="1560" y="380" />
