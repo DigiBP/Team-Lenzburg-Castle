@@ -67,7 +67,7 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
       <bpmn:incoming>Flow_1pz28ov</bpmn:incoming>
       <bpmn:outgoing>Flow_05d0bx0</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:startEvent id="Event_0a3uimc">
+    <bpmn:startEvent id="Event_0a3uimc" name="Customer Starts Application">
       <bpmn:outgoing>Flow_0rhrhrc</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:userTask id="Activity_1pqtdac" name="Identify Customer">
@@ -159,7 +159,6 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
     </bpmn:userTask>
     <bpmn:dataStoreReference id="DataStoreReference_18ggt5n" name="E-Patient Dossier" />
     <bpmn:dataStoreReference id="DataStoreReference_0mhovsw" name="Order" />
-    <bpmn:dataStoreReference id="DataStoreReference_0ypu29o" name="Product" />
     <bpmn:dataStoreReference id="DataStoreReference_1f7u00t" name="CRM" />
     <bpmn:boundaryEvent id="Event_0w0w8ih" attachedToRef="Activity_0ul4i93">
       <bpmn:outgoing>Flow_04frvno</bpmn:outgoing>
@@ -193,7 +192,7 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
     <bpmn:sequenceFlow id="Flow_1unodlk" sourceRef="Activity_1xr8heo" targetRef="Gateway_02aa72u" />
     <bpmn:sequenceFlow id="Flow_190w5x5" sourceRef="Activity_0u956um" targetRef="Activity_0ul4i93" />
     <bpmn:sequenceFlow id="Flow_01sv2sl" sourceRef="Activity_0ul4i93" targetRef="Activity_0v33c4r" />
-    <bpmn:userTask id="Activity_0e6veoe" name="GWP&#10;&#38; Symptoms?">
+    <bpmn:userTask id="Activity_0e6veoe" name="Symptom Analysis">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="Product_ID" label="Product_ID" type="long" />
@@ -272,6 +271,7 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
         <bpmn:targetRef>DataStoreReference_18ggt5n</bpmn:targetRef>
       </bpmn:dataOutputAssociation>
     </bpmn:serviceTask>
+    <bpmn:dataStoreReference id="DataStoreReference_0ypu29o" name="Product" />
   </bpmn:process>
   <bpmn:process id="Process_1su1ssz" isExecutable="false" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -384,6 +384,9 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0a3uimc_di" bpmnElement="Event_0a3uimc" bioc:stroke="black" bioc:fill="white">
         <dc:Bounds x="182" y="322" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="160" y="365" width="80" height="27" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0vnplau_di" bpmnElement="Activity_1pqtdac" bioc:stroke="black" bioc:fill="white">
         <dc:Bounds x="270" y="300" width="100" height="80" />
@@ -418,12 +421,6 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
           <dc:Bounds x="1565" y="131" width="29" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="DataStoreReference_0ypu29o_di" bpmnElement="DataStoreReference_0ypu29o" bioc:stroke="black" bioc:fill="white">
-        <dc:Bounds x="1245" y="175" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1251" y="151" width="38" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="DataStoreReference_1f7u00t_di" bpmnElement="DataStoreReference_1f7u00t" bioc:stroke="black" bioc:fill="white">
         <dc:Bounds x="279" y="195" width="50" height="50" />
         <bpmndi:BPMNLabel>
@@ -441,6 +438,12 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1nh5pc9_di" bpmnElement="Activity_16il0x1" bioc:stroke="black" bioc:fill="white">
         <dc:Bounds x="1780" y="300" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_0ypu29o_di" bpmnElement="DataStoreReference_0ypu29o" bioc:stroke="black" bioc:fill="white">
+        <dc:Bounds x="1255" y="175" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1261" y="151" width="39" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0u0z6sq_di" bpmnElement="Event_0w0w8ih" bioc:stroke="black" bioc:fill="white">
         <dc:Bounds x="1422" y="362" width="36" height="36" />
@@ -478,13 +481,13 @@ has_open_prescription=object.has_open_prescription;</camunda:script>
         <di:waypoint x="670" y="145" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataOutputAssociation_02w3j6m_di" bpmnElement="DataOutputAssociation_02w3j6m" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="1040" y="300" />
-        <di:waypoint x="1000" y="130" />
+        <di:waypoint x="1030" y="300" />
+        <di:waypoint x="1030" y="130" />
         <di:waypoint x="670" y="130" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataOutputAssociation_0o0eihr_di" bpmnElement="DataOutputAssociation_0o0eihr" bioc:stroke="black" bioc:fill="white">
-        <di:waypoint x="1277" y="300" />
-        <di:waypoint x="1272" y="225" />
+        <di:waypoint x="1280" y="300" />
+        <di:waypoint x="1280" y="225" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataOutputAssociation_0jlkzty_di" bpmnElement="DataOutputAssociation_0jlkzty" bioc:stroke="black" bioc:fill="white">
         <di:waypoint x="1830" y="300" />
